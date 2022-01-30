@@ -3,10 +3,13 @@ def print_color_map():
     textFilePrint = open("PrintedColorMapManual.txt",'w')
     major_colors = ["White", "Red", "Black", "Yellow", "Violet"]
     minor_colors = ["Blue", "Orange", "Green", "Brown", "Slate"]
+    max_alignment_numbers = len(str(len(major_colors) * len(minor_colors))) + 1
+    max_alignment_major_color = len(max(major_colors, key=len))+1
     for i, major in enumerate(major_colors):
         for j, minor in enumerate(minor_colors):
-            textToBePrinted = f'{i * 5 + j} | {major} | {minor}'
-            print(textToBePrinted)
+            alignmentSpaces_numbers = " "*(max_alignment_numbers -len(str(i * 5 + j+1)))
+            alignmentSpaces_majorColor = " "*(max_alignment_major_color -len(major))
+            textToBePrinted = f'{i * 5 + j +1}'+alignmentSpaces_numbers + f'| {major}' + alignmentSpaces_majorColor + f'| {minor}'
             textFilePrint.write(textToBePrinted + '\n')
     textFilePrint.close()
     return len(major_colors) * len(minor_colors)
@@ -21,15 +24,15 @@ class colorMapManualTester(unittest.TestCase):
         self.assertEqual(self.result,len(self.ColorMapPrintedManualText))
 
     def test_color_map_manual_index(self):
-        testIndex = 0
+        testPairNumber = 1
         for color_map_manual_index in range(len(self.ColorMapPrintedManualText)):
-            self.assertEqual(int(self.ColorMapPrintedManualText[color_map_manual_index].split("|")[0].strip()),testIndex)
-            testIndex +=1
+            self.assertEqual(int(self.ColorMapPrintedManualText[color_map_manual_index].split("|")[0].strip()),testPairNumber)
+            testPairNumber +=1
     
     def test_color_map_manual_alignment(self):
-        max_alignmnet_expected = len(str(self.result)) +1
+        max_alignment_expected = len(str(self.result)) +1
         for color_map_manual_index in range(len(self.ColorMapPrintedManualText)):
-            self.assertEqual(int(len(self.ColorMapPrintedManualText[color_map_manual_index].split("|")[0])),max_alignmnet_expected)
+            self.assertEqual(int(len(self.ColorMapPrintedManualText[color_map_manual_index].split("|")[0])),max_alignment_expected)
         
 if __name__ == "__main__":
     unittest.main()
